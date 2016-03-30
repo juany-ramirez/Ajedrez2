@@ -11,6 +11,5 @@ class Peon: public Pieza{
   public: 
 	Peon(char color, int x, int y);//constructor
 	virtual bool movimientoValido(Pieza*** , Posicion );
-	virtual bool movimientoHacia(Pieza*** , Posicion );
 	virtual string toString()const;
 };

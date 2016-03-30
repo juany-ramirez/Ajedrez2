@@ -15,6 +15,5 @@ class Pieza{
 	void setColor(char);
 	void setPosicion(Posicion);
 	virtual bool movimientoValido(Pieza*** , Posicion )=0;
-	virtual bool movimientoHacia(Pieza*** , Posicion )=0;
 	virtual string toString()const;
 };

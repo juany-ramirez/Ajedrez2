@@ -71,23 +71,8 @@ bool Rey::movimientoValido(Pieza*** tablero, Posicion direccion){
 
 
 	}
-	
-
-
-
 }
-bool Rey::movimientoHacia(Pieza***tablero, Posicion direccion){
-	if(movimientoValido(tablero,direccion)){
-		tablero[posicion.getY()][posicion.getX()] = NULL;
-		posicion = direccion;
-		tablero[posicion.getY()][posicion.getX()] = this;
-		return true;
-	}
-	else{
-		cout << "Movimiento Invalido" << endl;
-		return false;
-	}
-}
+
 string Rey::toString()const{
 	stringstream ss;
 	if (color == 'N'){

@@ -19,7 +19,7 @@ void eliminarTablero(Pieza***);
 void crearPiezas(Pieza***);
 int coordenadaConsonante(char);
 bool jaqueMate(Pieza***);
-void impresionTablero(Pieza***, int );
+void impresionTablero(Pieza***);
 void guardarTablero (Pieza*** tablero);
 void abrirTablero(Pieza*** tablero);
 
@@ -30,73 +30,61 @@ int main(int argc, char const *argv[]){
 	bool primerPeonGuardado = false;
 	int contadorJugadas=1;
 	int x,y,x1,y1;
-	while(ans == '1' || ans == '2'){
-		tablero = crearTablero();
+	
+	tablero = crearTablero();
 
-		int turnoJugador=1;
-		bool condicionGuardado = true;
-		string cambioPieza;
-		bool valid;
+	int turnoJugador=1;
+	bool condicionGuardado = true;
+	string cambioPieza;
+	bool valid;
 
-		char coordenadas[4];
+	char coordenadas[4];
 
-		while(!jaqueMate(tablero)){
+	while(!jaqueMate(tablero)){
 
-			impresionTablero(tablero, turnoJugador);
+		cout<< endl<< endl<<"\t\t\t\t\t\t\t JUGADOR     " << turnoJugador<< endl;
+		if(turnoJugador==1)
+			cout<< "\t\t\t\t\t\t    ***PIEZAS EN MINUSCULA"<< endl << endl;
+		else
+			cout<< "\t\t\t\t\t\t    ***PIEZAS EN MAYUSCULA"<< endl << endl;
 
-			cout<<"Ingresar coordenadas (Ejemplo B1B3)";
-			cin>> coordenadas;
+		impresionTablero(tablero);
 
-			x = coordenadas[1]-'0';
-			y = coordenadaConsonante(coordenadas[0]);
-			
-			x1 = coordenadas[3]-'0';
-			y1 =coordenadaConsonante(coordenadas[2]);
+		cout<<endl<<"Ingresar coordenadas (Ejemplo - B1B3):\t";
+		cin>> coordenadas;
 
-			init_pair(6, COLOR_RED,     COLOR_BLACK);
-			
-			Posicion pos(x1,y1);
-			if (tablero[y][x]->getColor()=='B' && tablero[y][x] != NULL){//validacion de mover
-				if(tablero[y][x]->movimientoHacia(tablero,pos))
-					valid = true;//variable de validacion
-				else
-					valid = false;
-			}else{
-				attron(COLOR_PAIR(6));
-				printw("\n");
-				cout"\t\t\tMovimiento Invalido; Jugador opuesto \n";
-				cout"\t\t\t[Presionar cualquier tecla para continuar] \n";
-				attroff(COLOR_PAIR(6));
+		x = coordenadas[1]-'0';
+		y = coordenadaConsonante(coordenadas[0]);
+		
+		x1 = coordenadas[3]-'0';
+		y1 =coordenadaConsonante(coordenadas[2]);
+
+		
+		Posicion direccion(x1,y1);
+		if(((tablero[y][x]->getColor()=='B' && turnoJugador==1) ||
+			(tablero[y][x]->getColor()=='N' && turnoJugador==2)) && tablero[y][x] != NULL) {
+			if(tablero[y][x]->movimientoValido(tablero,direccion)){
+				tablero[y1][x1] = tablero[y][x];
+				tablero[y][x] = NULL;
 			}
-			if(contadorJugadas%2){			//Turno Jugador 2
-				turnoJugador = 1;
-				jugadorNum= '1';
-			}else{						//Turno Jugador 1
-				turnoJugador = 2;
-				jugadorNum= '2';
+			else{
+				cout << "Movimiento Invalido" << endl;
 			}
-
-			
-			
-			if(!valid)
-				getch();
+		}else{
+			cout<<"\t\t\tPieza no valida \n";
 		}
 
-		impresionMenu();
-
-		validMenu = false;
-		while (validMenu == false){
-			ans = getch();
-			if(ans >= '0' && ans <= '3'){
-				echo();
-				addch(ans);
-				validMenu = true;
-			}
+		if(contadorJugadas%2){			//Turno Jugador 2
+			turnoJugador = 1;
+			jugadorNum= '1';
+		}else{						//Turno Jugador 1
+			turnoJugador = 2;
+			jugadorNum= '2';
 		}
+
 	}
 
 	eliminarTablero(tablero);
-	endwin();
 	return 0;
 }
 
@@ -105,7 +93,7 @@ bool jaqueMate(Pieza*** tablero){
 	int cont=0;
 	for (int i = 0; i < 8; ++i){
 		for (int j = 0; j < 8; ++j){
-			if((tablero[i][j]->toString() == "K1") || (tablero[i][j]->toString() == "K2")){
+			if( dynamic_cast<Rey*>(tablero[i][j]) != NULL){
 				cont++;
 			}
 		}
@@ -189,20 +177,22 @@ int coordenadaConsonante(char coordenada){
 		return 7;
 }
 
-void impresionTablero(Piece*** tablero){//imprimir tablero
+void impresionTablero(Pieza*** tablero){//imprimir tablero
 	char letras[] = "ABCDEFGH";
 	int numeros[] = {1,2,3,4,5,6,7,8};
+	cout << "---------------------------------------------------------------------------------------------------------------------------------"<< endl;
 	for (int i = 0; i < 8; ++i){
 		for (int j = 0; j < 8; ++j)	{
 			if(tablero[i][j] != NULL)
-				cout << "[" << tablero[i][j]->toString() << "]";
+				cout << "\t" << tablero[i][j]->toString() << "\t|";
 			else
-				cout << "| |";
+				cout << "\t \t|";
 		}
 		cout << letras[i] << endl;
+		cout << "---------------------------------------------------------------------------------------------------------------------------------"<< endl;
 	}
 	for (int i = 0; i < 8; ++i)	{
-		cout << " " << numeros[i] << " ";
+		cout<< "\t" << numeros[i] << "\t";
 	}
 	cout << endl;
 }

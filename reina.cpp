@@ -17,18 +17,7 @@ bool Reina::movimientoValido(Pieza*** tablero, Posicion direccion){
 	else
 		return false;
 }
-bool Reina::movimientoHacia(Pieza*** tablero, Posicion direccion){
-	if(movimientoValido(tablero,direccion)){
-		tablero[posicion.getY()][posicion.getX()] = NULL;
-		posicion = direccion;
-		tablero[posicion.getY()][posicion.getX()] = this;
-		return true;
-	}
-	else{
-		cout << "Movimiento Invalido" << endl;
-		return false;
-	}
-}
+
 
 string Reina::toString()const{
 	stringstream ss;

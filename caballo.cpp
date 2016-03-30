@@ -28,18 +28,8 @@ bool Caballo::movimientoValido(Pieza*** tablero, Posicion direccion){
 	else
 		return false;
 }//si el moviemiento es valido
-bool Caballo::movimientoHacia(Pieza*** tablero, Posicion direccion){
-	if(movimientoValido(tablero,direccion)){
-		tablero[posicion.getY()][posicion.getX()] = NULL;
-		posicion = direccion;
-		tablero[posicion.getY()][posicion.getX()] = this;
-		return true;
-	}
-	else{
-		cout << "Invalid move" << endl;
-		return false;
-	}
-}//se mueve
+
+
 string Caballo::toString()const{
 	stringstream ss;
 	if (color == 'N'){

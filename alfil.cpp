@@ -218,19 +218,6 @@ bool Alfil::movimientoValido(Pieza***tablero, Posicion direccion){
 
 }
 
-bool Alfil::movimientoHacia(Pieza*** tablero, Posicion direccion){
-	if(movimientoValido(tablero,direccion)){
-		tablero[posicion.getY()][posicion.getX()] = NULL;
-		posicion = direccion;
-		tablero[posicion.getY()][posicion.getX()] = this;
-		return true;
-	}
-	else{
-		cout << "Movimiento Invalido" << endl;
-		return false;
-	}
-}
-
 string Alfil::toString()const{
 	stringstream ss;
 	if (color == 'N'){
