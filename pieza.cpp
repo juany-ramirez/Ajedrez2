@@ -3,6 +3,7 @@
 #include "pieza.h"
 
 using namespace std;
+using std::string;
 
 Pieza::Pieza(char color, int x, int y){
 	this->color = color;

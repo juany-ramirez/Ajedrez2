@@ -8,11 +8,12 @@
 #include "alfil.h"
 #include "torre.h"
 #include "peon.h"
-#include <cstring>
+#include <string>
 #include <sstream>
 #include <fstream>
 
 using namespace std;
+using std::string;
 
 Pieza*** crearTablero();
 void eliminarTablero(Pieza***);
@@ -39,8 +40,9 @@ int main(int argc, char const *argv[]){
 	bool valid;
 
 	char coordenadas[4];
+	int seguir=0;
 
-	while(!jaqueMate(tablero)){
+	while(!jaqueMate(tablero) && seguir==0){
 
 		cout<< endl<< endl<<"\t\t\t\t\t\t\t JUGADOR     " << turnoJugador<< endl;
 		if(turnoJugador==1)
@@ -61,8 +63,7 @@ int main(int argc, char const *argv[]){
 
 		
 		Posicion direccion(x1,y1);
-		if(((tablero[y][x]->getColor()=='B' && turnoJugador==1) ||
-			(tablero[y][x]->getColor()=='N' && turnoJugador==2)) && tablero[y][x] != NULL) {
+		if(((tablero[y][x]->getColor()=='B' && turnoJugador==1) || (tablero[y][x]->getColor()=='N' && turnoJugador==2)) && tablero[y][x] != NULL) {
 			if(tablero[y][x]->movimientoValido(tablero,direccion)){
 				tablero[y1][x1] = tablero[y][x];
 				tablero[y][x] = NULL;
@@ -73,15 +74,16 @@ int main(int argc, char const *argv[]){
 		}else{
 			cout<<"\t\t\tPieza no valida \n";
 		}
-
-		if(contadorJugadas%2){			//Turno Jugador 2
-			turnoJugador = 1;
-			jugadorNum= '1';
-		}else{						//Turno Jugador 1
+		contadorJugadas++;
+		if(contadorJugadas%2==0){			//Turno Jugador 2
 			turnoJugador = 2;
 			jugadorNum= '2';
+		}else{						//Turno Jugador 1
+			turnoJugador = 1;
+			jugadorNum= '1';
 		}
-
+		cout<<"Desea Seguir Jugando? 0 Si/ 1 No: ";
+		cin>>seguir;
 	}
 
 	eliminarTablero(tablero);
@@ -109,13 +111,14 @@ bool jaqueMate(Pieza*** tablero){
 void eliminarTablero(Pieza*** tablero){
 	for(int i=0;i<8;i++){
 		for(int j=0;j<8;j++){
-			delete tablero[i][j];
+			delete[] tablero[i][j];
 		}		
 	}
 	for(int i=0;i<8;i++){
 		delete[] tablero[i];
 	}
 	delete[] tablero;
+	return;
 }
 
 Pieza*** crearTablero(){
@@ -179,8 +182,8 @@ int coordenadaConsonante(char coordenada){
 
 void impresionTablero(Pieza*** tablero){//imprimir tablero
 	char letras[] = "ABCDEFGH";
-	int numeros[] = {1,2,3,4,5,6,7,8};
-	cout << "---------------------------------------------------------------------------------------------------------------------------------"<< endl;
+	int numeros[] = {0,1,2,3,4,5,6,7};
+	cout << "---------------------------------------------------------------------------------------------------------------------------"<< endl;
 	for (int i = 0; i < 8; ++i){
 		for (int j = 0; j < 8; ++j)	{
 			if(tablero[i][j] != NULL)
@@ -189,7 +192,7 @@ void impresionTablero(Pieza*** tablero){//imprimir tablero
 				cout << "\t \t|";
 		}
 		cout << letras[i] << endl;
-		cout << "---------------------------------------------------------------------------------------------------------------------------------"<< endl;
+		cout << "---------------------------------------------------------------------------------------------------------------------------"<< endl;
 	}
 	for (int i = 0; i < 8; ++i)	{
 		cout<< "\t" << numeros[i] << "\t";

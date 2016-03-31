@@ -3,73 +3,46 @@
 #include "rey.h"
 #include <iostream>
 #include <sstream>
+#include <string>
+
 using std::cout;
 using std::endl;
 using std::stringstream;
+using std::string;
 
+Rey::Rey(char color, int x , int y):Pieza(color,x,y){}
 
-Rey::Rey(char color, int x , int y):Pieza(color,x,y){
-
-}
 bool Rey::movimientoValido(Pieza*** tablero, Posicion direccion){
-
 	int diferenciaV, diferenciaH;
-
+	char actual, opuesto;
 	if(this->getColor()=='B'){
-		//Verifica que no sean del mismo color
-		if (tablero[direccion.getY()][direccion.getX()]==NULL || tablero[direccion.getY()][direccion.getX()]->getColor()=='N'){
-
-			//Busca la diferencia Vertical
-			if (direccion.getY()>this->posicion.getY()){
-				diferenciaV = direccion.getY() - this->posicion.getY();
-			}else if(direccion.getY()<this->posicion.getY()){
-				diferenciaV = this->posicion.getY()-direccion.getY();
-			}
-			//Busca la diferencia Horizontal
-			if (direccion.getX()>this->posicion.getX()){
-				diferenciaH = direccion.getX() - this->posicion.getX();
-			}else if(direccion.getX()<this->posicion.getX()){
-				diferenciaH = this->posicion.getX()-direccion.getX();
-			}
-
-			//Si la diferencia de las posiciones es mayor a 1
-			if(diferenciaH==1 || diferenciaV==1){
-				return true;
-			}else{
-				return false;
-			}
-
-			
-
-		}else if (tablero[direccion.getY()][direccion.getX()]->getColor()=='B'){
-			return false;	
-		}
+		actual='B';
+		opuesto='N';
 	}else{
-		if (tablero[direccion.getY()][direccion.getX()]==NULL || tablero[direccion.getY()][direccion.getX()]->getColor()=='B'){
-			//Busca la diferencia Vertical
-			if (direccion.getY()>this->posicion.getY()){
-				diferenciaV = direccion.getY() - this->posicion.getY();
-			}else if(direccion.getY()<this->posicion.getY()){
-				diferenciaV = this->posicion.getY()-direccion.getY();
-			}
-			//Busca la diferencia Horizontal
-			if (direccion.getX()>this->posicion.getX()){
-				diferenciaH = direccion.getX() - this->posicion.getX();
-			}else if(direccion.getX()<this->posicion.getX()){
-				diferenciaH = this->posicion.getX()-direccion.getX();
-			}
+		actual='N';
+		opuesto='B';
+	}
 
-			//Si la diferencia de las posiciones es mayor a 1
-			if(diferenciaH==1 || diferenciaV==1){
-				return true;
-			}else{
-				return false;
-			}
-		} else	{
-			return false;	
-		}
-
-
+	if (tablero[direccion.getY()][direccion.getX()]==NULL || tablero[direccion.getY()][direccion.getX()]->getColor()==opuesto){
+		if((direccion.getY()==this->posicion.getY()-1) && (direccion.getX()==this->posicion.getX()-1)){
+			return true;
+		}else if((this->posicion.getX()==direccion.getX()) && (direccion.getY()==this->posicion.getY()-1)){
+			return true;
+		}else if((direccion.getY()==this->posicion.getY()-1) && (direccion.getX()==this->posicion.getX()+1)){
+			return true;
+		}else if((this->posicion.getY()==direccion.getY()) && (direccion.getX()==this->posicion.getX()-1)){
+			return true;
+		}else if((this->posicion.getY()==direccion.getY()) && (direccion.getX()==this->posicion.getX()+1)){
+			return true;
+		}else if((direccion.getY()==this->posicion.getY()+1) && (direccion.getX()==this->posicion.getX()-1)){
+			return true;
+		}else if((direccion.getY()==this->posicion.getY()+1) && (direccion.getX()==this->posicion.getX())){
+			return true;
+		}else if((direccion.getY()==this->posicion.getY()+1) && (direccion.getX()==this->posicion.getX()+1)){
+			return true;
+		}		
+	}else if (tablero[direccion.getY()][direccion.getX()]->getColor()==actual){
+		return false;	
 	}
 }
 

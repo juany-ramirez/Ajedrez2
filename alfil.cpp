@@ -4,218 +4,101 @@
 #include <cmath>
 #include <sstream>
 #include <iostream>
+#include <string>
+
 using std::stringstream;
 using std::cout;
+using std::string;
 
+Alfil::Alfil(char color,int X,int Y):Pieza(color,X,Y){}
 
-Alfil::Alfil(char color,int X,int Y):Pieza(color,X,Y){
-	//Se llama al constructor de la clase Pieza
-}
 bool Alfil::movimientoValido(Pieza***tablero, Posicion direccion){
-
-	int contadorY,contadorX;
+	int y,x;
+	char actual=this->getColor();
 
 	if ((this->posicion.getX()== direccion.getX()) || (this->posicion.getY()== direccion.getY())){
 		//verifica que no se mueva a los lados ni verticalmente
 		return false;
 	}
 
-
-	if (fabs(this->posicion.getY()-direccion.getY())==fabs(this->posicion.getX()-direccion.getX())){
-		
-		if (this->getColor() == 'B'){
+	if (abs(this->posicion.getY()-direccion.getY())==abs(this->posicion.getX()-direccion.getX())){//verifica si se mueve en diagonal
 			if(this->posicion.getY() > direccion.getY() && this->posicion.getX()>direccion.getX()){
-				//si la posicion esta en un punto bajo y se quiere mover a la izquierda
-				contadorY=this->posicion.getY();
-				contadorX=this->posicion.getY();
+				y=this->posicion.getY()-1;
+				x=this->posicion.getX()-1;
 				
-
 				while(true){
-					if (tablero[contadorY][contadorX] == NULL){
-						contadorY--;
-						contadorX--;
+					if (tablero[y][x] == NULL){
+						y--;
+						x--;
 
-					} else if (tablero[contadorY][contadorX]!=NULL && tablero[contadorY][contadorX]->getColor()=='B'){
+					} else if (tablero[y][x]!=NULL && tablero[y][x]->getColor()==actual
+						){
 						return false;
 					}
-					if(contadorX == direccion.getX() || contadorY==direccion.getY()){
+					if(x == direccion.getX() || y==direccion.getY()){
 						break;
 					}
-
-
 				}
 				return true;
 
-
-
-			}else if(this->posicion.getY() > direccion.getY() && this->posicion.getX()<direccion.getX()){
-				//si la posicion esta en un punto bajo y se quiere mover a la derecha
-				contadorY=this->posicion.getY();
-				contadorX=this->posicion.getY();
-				
-
-				while(true){
-					
-					if (tablero[contadorY][contadorX] == NULL){
-						contadorY--;
-						contadorX++;
-
-					} else if (tablero[contadorY][contadorX]!=NULL && tablero[contadorY][contadorX]->getColor()=='B'){
+			}else if(this->posicion.getY() > direccion.getY() && this->posicion.getX()<direccion.getX()){	
+				y=this->posicion.getY()-1;
+				x=this->posicion.getX()+1;
+			
+				while(true){	
+					if (tablero[y][x] == NULL){
+						y--;
+						x++;
+					} else if (tablero[y][x]!=NULL && tablero[y][x]->getColor()==actual){
 						return false;
 					}
-					if(contadorX == direccion.getX() || contadorY==direccion.getY()){
+					if(x == direccion.getX() || y==direccion.getY()){
 						break;
 					}
 				}
+
 				return true;
 
 			}else if(this->posicion.getY() < direccion.getY() && this->posicion.getX()>direccion.getX()){
-				//si la posicion esta en un punto alto y se quiere mover a la izquierda
-				contadorY=this->posicion.getY();
-				contadorX=this->posicion.getY();
-				
+				y=this->posicion.getY()+1;
+				x=this->posicion.getX()-1;
 
 				while(true){
-					
-					if (tablero[contadorY][contadorX] == NULL){
-						contadorY++;
-						contadorX--;
-
-					} else if (tablero[contadorY][contadorX]!=NULL && tablero[contadorY][contadorX]->getColor()=='B'){
+					if (tablero[y][x] == NULL){
+						y++;
+						x--;
+					} else if (tablero[y][x]!=NULL && tablero[y][x]->getColor()==actual){
 						return false;
 					}
-					if(contadorX == direccion.getX() || contadorY==direccion.getY()){
+					if(x == direccion.getX() || y==direccion.getY()){
 						break;
 					}
 				}
+
 				return true;
 
-			}else if(this->posicion.getY() < direccion.getY() && this->posicion.getX()<direccion.getX()){
-				// si la posicion esta en un punto alto y se quiere mover a la derecha
-				contadorY=this->posicion.getY();
-				contadorX=this->posicion.getY();
+			}else if(this->posicion.getY() < direccion.getY() && this->posicion.getX()<direccion.getX()){				
+				y=this->posicion.getY()+1;
+				x=this->posicion.getX()+1;
 				
-
-				while(true){
-					
-					if (tablero[contadorY][contadorX] == NULL){
-						contadorY++;
-						contadorX++;
-
-					} else if (tablero[contadorY][contadorX]!=NULL && tablero[contadorY][contadorX]->getColor()=='B'){
+				while(true){					
+					if (tablero[y][x] == NULL){
+						y++;
+						x++;
+					} else if (tablero[y][x]!=NULL && tablero[y][x]->getColor()==actual){
 						return false;
 					}
-					if(contadorX == direccion.getX() || contadorY==direccion.getY()){
+					if(x == direccion.getX() || y==direccion.getY()){
 						break;
 					}
-
 				}
+
 				return true;
 			}
-		} else {
-			//si el color de esta pieza es Negro
-
-			if(this->posicion.getY() > direccion.getY() && this->posicion.getX()>direccion.getX()){
-				//si la posicion esta en un punto bajo y se quiere mover a la izquierda
-				contadorY=this->posicion.getY();
-				contadorX=this->posicion.getY();
-				
-
-
-				while(true){
-					
-					if (tablero[contadorY][contadorX] == NULL){
-						contadorY--;
-						contadorX--;
-
-					} else if (tablero[contadorY][contadorX]!=NULL && tablero[contadorY][contadorX]->getColor()=='N'){
-						return false;
-					}
-					if(contadorX == direccion.getX() || contadorY==direccion.getY()){
-						break;
-					}
-
-				}
-				return true;
-
-
-
-			}else if(this->posicion.getY() > direccion.getY() && this->posicion.getX()<direccion.getX()){
-				//si la posicion esta en un punto bajo y se quiere mover a la derecha
-				contadorY=this->posicion.getY();
-				contadorX=this->posicion.getY();
-
-				
-				while(true){
-
-					if (tablero[contadorY][contadorX] == NULL){
-						contadorY--;
-						contadorX++;
-
-					} else if (tablero[contadorY][contadorX]!=NULL && tablero[contadorY][contadorX]->getColor()=='N'){
-						return false;
-					}
-					if(contadorX == direccion.getX() || contadorY==direccion.getY()){
-						break;
-					}
-
-				}
-				
-				return true;
-
-			}else if(this->posicion.getY() < direccion.getY() && this->posicion.getX()>direccion.getX()){
-				//si la posicion esta en un punto alto y se quiere mover a la izquierda
-				contadorY=this->posicion.getY();
-				contadorX=this->posicion.getY();
-
-				
-
-				while(true){
-					
-					if (tablero[contadorY][contadorX] == NULL){
-						contadorY++;
-						contadorX--;
-
-					} else if (tablero[contadorY][contadorX]!=NULL && tablero[contadorY][contadorX]->getColor()=='N'){
-						return false;
-					}
-					if(contadorX == direccion.getX() || contadorY==direccion.getY()){
-						break;
-					}
-
-				}
-				
-				return true;
-
-			}else if(this->posicion.getY() < direccion.getY() && this->posicion.getX()<direccion.getX()){
-				// si la posicion esta en un punto alto y se quiere mover a la derecha
-				contadorY=this->posicion.getY();
-				contadorX=this->posicion.getY();
-				
-
-				while(true){
-					
-					if (tablero[contadorY][contadorX] == NULL){
-						contadorY++;
-						contadorX++;
-
-					} else if (tablero[contadorY][contadorX]!=NULL && tablero[contadorY][contadorX]->getColor()=='N'){
-						return false;
-					}
-					if(contadorX == direccion.getX() || contadorY==direccion.getY()){
-						break;
-					}
-
-				}
-				return true;
-			}
-
-		}
 		
 	}else{
 		return false;
 	}
-
 }
 
 string Alfil::toString()const{
